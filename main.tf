@@ -23,7 +23,7 @@ resource "tfe_team" "team" {
 
 resource "tfe_team_project_access" "team_access" {
   access     = "admin"
-  team_id    = tfe_team.team
+  team_id    = tfe_team.team.id
   project_id = tfe_project.project.id
 }
 
