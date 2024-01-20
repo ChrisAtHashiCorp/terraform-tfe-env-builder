@@ -4,7 +4,7 @@ resource "tfe_project" "project" {
 }
 
 resource "tfe_team" "team" {
-  count = var.team == null ? 1 : 0
+  count = var.team.id == null ? 1 : 0
 
   name         = var.env.team_name == null ? var.env.name : var.env.team_name
   organization = var.org_name
