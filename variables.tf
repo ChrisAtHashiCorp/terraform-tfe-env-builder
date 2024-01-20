@@ -32,4 +32,8 @@ variable "team" {
     id    = optional(string, null)
     token = optional(string, null)
   })
+  default = {
+    id = null
+    token = null
+  }
 }
