@@ -51,5 +51,5 @@ resource "tfe_variable" "team_token" {
   sensitive       = true
   category        = "env"
   variable_set_id = tfe_variable_set.variable_set.id
-  description     = format("The %s's Team TFE Token", var.env.team_name == null ? var.env.name : var.env.team_name
+  description     = format("The %s's Team TFE Token", var.env.team_name == null ? var.env.name : var.env.team_name)
 }
