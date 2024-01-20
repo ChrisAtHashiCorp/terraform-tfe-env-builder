@@ -1,25 +1,25 @@
 resource "tfe_project" "project" {
   organization = var.org_name
-  name         = var.env.project_name == null ? var.env.name : var.env.project_name
+  name         = var.env_name
 }
 
 resource "tfe_team" "team" {
   count = var.team.id == null ? 1 : 0
 
-  name         = var.env.team_name == null ? var.env.name : var.env.team_name
+  name         = var.env_name
   organization = var.org_name
   organization_access {
-    read_workspaces         = var.env.organization_access.read_workspaces
-    read_projects           = var.env.organization_access.read_projects
-    manage_policies         = var.env.organization_access.manage_policies
-    manage_policy_overrides = var.env.organization_access.manage_policy_overrides
-    manage_workspaces       = var.env.organization_access.manage_workspaces
-    manage_vcs_settings     = var.env.organization_access.manage_vcs_settings
-    manage_providers        = var.env.organization_access.manage_providers
-    manage_modules          = var.env.organization_access.manage_modules
-    manage_run_tasks        = var.env.organization_access.manage_run_tasks
-    manage_projects         = var.env.organization_access.manage_projects
-    manage_membership       = var.env.organization_access.manage_membership
+    read_workspaces         = var.access.organization_access.read_workspaces
+    read_projects           = var.access.organization_access.read_projects
+    manage_policies         = var.access.organization_access.manage_policies
+    manage_policy_overrides = var.access.organization_access.manage_policy_overrides
+    manage_workspaces       = var.access.organization_access.manage_workspaces
+    manage_vcs_settings     = var.access.organization_access.manage_vcs_settings
+    manage_providers        = var.access.organization_access.manage_providers
+    manage_modules          = var.access.organization_access.manage_modules
+    manage_run_tasks        = var.access.organization_access.manage_run_tasks
+    manage_projects         = var.access.organization_access.manage_projects
+    manage_membership       = var.access.organization_access.manage_membership
   }
 }
 
@@ -30,7 +30,7 @@ resource "tfe_team_project_access" "team_access" {
 }
 
 resource "tfe_variable_set" "variable_set" {
-  name         = var.env.varset_name == null ? var.env.name : var.env.varset_name
+  name         = var.env_name
   description  = "Variable set for the Team."
   organization = var.org_name
 }
@@ -51,5 +51,5 @@ resource "tfe_variable" "team_token" {
   sensitive       = true
   category        = "env"
   variable_set_id = tfe_variable_set.variable_set.id
-  description     = format("The %s's Team TFE Token", var.env.team_name == null ? var.env.name : var.env.team_name)
+  description     = format("The %s's Team TFE Token", var.env_name)
 }

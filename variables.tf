@@ -3,13 +3,14 @@ variable "org_name" {
   type        = string
 }
 
-variable "env" {
+variable "env_name" {
+  description = "Name of the environment to create."
+  type = string
+}
+
+variable "access" {
   description = "Values for the environment."
   type = object({
-    name         = string
-    project_name = optional(string, null)
-    team_name    = optional(string, null)
-    varset_name  = optional(string, null)
     organization_access = optional(object({
       read_workspaces         = optional(bool, false)
       read_projects           = optional(bool, false)
