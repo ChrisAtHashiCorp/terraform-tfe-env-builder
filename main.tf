@@ -25,7 +25,7 @@ resource "tfe_team" "team" {
 
 resource "tfe_team_project_access" "team_access" {
   access     = "admin"
-  team_id    = var.team == null ? tfe_team.team[0].id : var.team.id
+  team_id    = var.team.id == null ? tfe_team.team[0].id : var.team.id
   project_id = tfe_project.project.id
 }
 
@@ -42,7 +42,7 @@ resource "tfe_project_variable_set" "project_variable_set" {
 
 resource "tfe_team_token" "team_token" {
   count   = var.team.token == null ? 1 : 0
-  team_id = tfe_team.team[0].id
+  team_id = var.team.token == null ? tfe_team.team[0].id : var.team.id
 }
 
 resource "tfe_variable" "team_token" {
