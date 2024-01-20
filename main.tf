@@ -1,10 +1,12 @@
 resource "tfe_project" "project" {
   organization = var.org_name
-  name         = var.env.project_name != "" ? var.env.project_name : var.env.name
+  name         = var.env.project_name == null ? var.env.name : var.env.project_name
 }
 
 resource "tfe_team" "team" {
-  name         = var.env.team_name != "" ? var.env.team_name : var.env.name
+  count = var.team == null ? 1 : 0
+
+  name         = var.env.team_name == null ? var.env.name : var.env.team_name
   organization = var.org_name
   organization_access {
     read_workspaces         = var.env.organization_access.read_workspaces
@@ -23,12 +25,12 @@ resource "tfe_team" "team" {
 
 resource "tfe_team_project_access" "team_access" {
   access     = "admin"
-  team_id    = tfe_team.team.id
+  team_id    = var.team == null ? tfe_team.team[0].id : var.team.id
   project_id = tfe_project.project.id
 }
 
 resource "tfe_variable_set" "variable_set" {
-  name         = var.env.varset_name != "" ? var.env.varset_name : var.env.name
+  name         = var.env.varset_name == null ? var.env.name : var.env.varset_name
   description  = "Variable set for the Team."
   organization = var.org_name
 }
@@ -39,12 +41,13 @@ resource "tfe_project_variable_set" "project_variable_set" {
 }
 
 resource "tfe_team_token" "team_token" {
-  team_id = tfe_team.team.id
+  count   = var.team == null ? 1 : 0
+  team_id = tfe_team.team[0].id
 }
 
 resource "tfe_variable" "team_token" {
   key             = "TFE_TOKEN"
-  value           = tfe_team_token.team_token.token
+  value           = var.team == null ? tfe_team_token.team_token[0].token : var.team.token
   sensitive       = true
   category        = "env"
   variable_set_id = tfe_variable_set.variable_set.id

@@ -7,9 +7,9 @@ variable "env" {
   description = "Values for the environment."
   type = object({
     name         = string
-    project_name = optional(string, "")
-    team_name    = optional(string, "")
-    varset_name  = optional(string, "")
+    project_name = optional(string, null)
+    team_name    = optional(string, null)
+    varset_name  = optional(string, null)
     organization_access = optional(object({
       read_workspaces         = optional(bool, false)
       read_projects           = optional(bool, false)
@@ -24,4 +24,13 @@ variable "env" {
       manage_membership       = optional(bool, false)
     }), {})
   })
+}
+
+variable "team" {
+  description = "Existing Team to leverage instead of creating new one for this env."
+  type = object({
+    id    = string
+    token = string
+  })
+  default = null
 }
