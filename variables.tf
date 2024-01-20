@@ -25,6 +25,7 @@ variable "access" {
       manage_membership       = optional(bool, false)
     }), {})
   })
+  default = {}
 }
 
 variable "team" {
