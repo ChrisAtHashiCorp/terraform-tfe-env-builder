@@ -41,13 +41,13 @@ resource "tfe_project_variable_set" "project_variable_set" {
 }
 
 resource "tfe_team_token" "team_token" {
-  count   = var.team == null ? 1 : 0
+  count   = var.team.token == null ? 1 : 0
   team_id = tfe_team.team[0].id
 }
 
 resource "tfe_variable" "team_token" {
   key             = "TFE_TOKEN"
-  value           = var.team == null ? tfe_team_token.team_token[0].token : var.team.token
+  value           = var.team.token == null ? tfe_team_token.team_token[0].token : var.team.token
   sensitive       = true
   category        = "env"
   variable_set_id = tfe_variable_set.variable_set.id
