@@ -29,8 +29,7 @@ variable "env" {
 variable "team" {
   description = "Existing Team to leverage instead of creating new one for this env."
   type = object({
-    id    = string
-    token = string
+    id    = optional(string, null)
+    token = optional(string, null)
   })
-  default = null
 }
